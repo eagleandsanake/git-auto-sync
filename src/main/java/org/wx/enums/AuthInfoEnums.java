@@ -18,8 +18,12 @@ public enum AuthInfoEnums {
 
     // https
     USER_NAME("用户名"),
-    PASSWORD("密码");
+    PASSWORD("密码"),
 
+    // proxy conf
+    PROXY_SWITCH("是否开启代理"),
+    IP_ADDRESS("代理地址"),
+    PORT("代理端口");
     private String desc;
 
 }

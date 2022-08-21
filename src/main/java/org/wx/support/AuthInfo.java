@@ -20,4 +20,10 @@ public class AuthInfo{
 
       private TransportConfigCallback transportConfigCallback;
 
+      private Boolean proxySwitch;
+
+      private String ipAddress;
+
+      private Integer port;
+
 }
