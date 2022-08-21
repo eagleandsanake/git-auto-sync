@@ -1,9 +1,6 @@
 package org.wx.utils;
 
-import lombok.Data;
-
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -35,6 +32,25 @@ public class PropertiesUtils {
     }
 
 
+    public static Properties getPropertiesFromDisk(String diskPath) throws IOException {
+        Properties properties = new Properties();
+        File file = new File(diskPath);
+        FileInputStream fileInputStream = null;
+        InputStreamReader inputStreamReader = null;
+        try {
+             fileInputStream = new FileInputStream(file);
+             inputStreamReader = new InputStreamReader(fileInputStream,"utf-8");
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            properties.load(bufferedReader);
+        } catch (Exception e) {
+
+        } finally {
+            if(fileInputStream != null){
+                fileInputStream.close();
+            }
+        }
+        return properties;
+    }
 
 
 }
