@@ -1,7 +1,5 @@
 package org.wx.sync;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.eclipse.jgit.api.CheckoutCommand;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.eclipse.jgit.api.PullCommand;
@@ -11,7 +9,6 @@ import org.wx.utils.GitUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author wuxin
