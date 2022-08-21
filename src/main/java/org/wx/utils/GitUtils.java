@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class GitUtils {
 
-    public static void gitSSHClone(AuthInfo authInfo, CloneCommand cloneCommand) throws GitAPIException {
+    public static Boolean gitSSHClone(AuthInfo authInfo, CloneCommand cloneCommand) throws GitAPIException {
         // lode user info
         String remoteRepoPath = authInfo.getRemoteRepoPath();
         String localCodeDir = authInfo.getLocalCodeDir();
@@ -29,10 +29,10 @@ public class GitUtils {
                     .setDirectory(new File(localCodeDir)) //设置下载存放路径
                     .setCloneAllBranches(true)
                     .call();
-            System.out.println("success");
+            return Boolean.TRUE;
         } catch (Exception e) {
-            System.out.println("fail");
             e.printStackTrace();
+            return Boolean.FALSE;
         } finally {
             if (git != null) {
                 git.close();
@@ -57,7 +57,7 @@ public class GitUtils {
     }
 
 
-    public static void gitCheckout(AuthInfo authInfo,String branchName){
+    public static void gitCheckout(AuthInfo authInfo,String branchName) throws GitAPIException, IOException {
         try {
             String localCodeDir = authInfo.getLocalCodeDir();
             localCodeDir+="\\.git";
@@ -73,29 +73,34 @@ public class GitUtils {
             } finally {
                 git.close();
             }
-        } catch (IOException | GitAPIException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw e;
         }
     }
 
 
-    public static void gitCheckOutAllBranch(AuthInfo authInfo,
+    public static Boolean gitCheckOutAllBranch(AuthInfo authInfo,
                                             LsRemoteCommand lsRemoteCommand) throws GitAPIException {
         Collection<Ref> allBranch = lsRemoteCommand.setRemote(authInfo.getRemoteRepoPath())
                 .setHeads(true).call();
 
-        if(allBranch != null && allBranch.size() > 0){
-            List<String> allBranchNames = allBranch.stream().map(e -> {
-                String name = e.getName();
-                if (name.startsWith("refs/heads/")) {
-                    name = name.replace("refs/heads/", "");
-                }
-                return name;
-            }).collect(Collectors.toList());
+        try {
+            if(allBranch != null && allBranch.size() > 0){
+                List<String> allBranchNames = allBranch.stream().map(e -> {
+                    String name = e.getName();
+                    if (name.startsWith("refs/heads/")) {
+                        name = name.replace("refs/heads/", "");
+                    }
+                    return name;
+                }).collect(Collectors.toList());
 
-            for (String branchName : allBranchNames) {
-                gitCheckout(authInfo,branchName);
+                for (String branchName : allBranchNames) {
+                    gitCheckout(authInfo,branchName);
+                }
             }
+            return Boolean.TRUE;
+        } catch (Exception e){
+            return Boolean.FALSE;
         }
     }
 

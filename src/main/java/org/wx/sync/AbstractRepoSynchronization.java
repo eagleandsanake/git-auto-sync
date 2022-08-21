@@ -1,5 +1,6 @@
 package org.wx.sync;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.eclipse.jgit.api.CheckoutCommand;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.LsRemoteCommand;
@@ -23,21 +24,16 @@ public abstract class AbstractRepoSynchronization implements Synchronization{
     @Override
     public Boolean synchronize () throws GitAPIException, IOException {
         // read localDir has .git file inside or not
-        // if contains just checkout and pull
         Boolean containGitFile = checkLocalDirFiles(authInfo);
         LsRemoteCommand lsRemoteCommandWithAuth = getLsRemoteCommandWithAuth(authInfo);
-        PullCommand pullCommandWithAuth = getPullCommandWithAuth(authInfo);
-        if(containGitFile){
-            // checkout all branches and pull
-            GitUtils.gitCheckOutAllBranch(authInfo,lsRemoteCommandWithAuth);
-            return Boolean.TRUE;
+        Boolean syncStatus = Boolean.TRUE;
+        if(!containGitFile){
+            // if dose not contains .git file
+            // clone repo
+            syncStatus &= GitUtils.gitSSHClone(authInfo,getCloneCommandWithAuth(authInfo));
         }
-        // if dose not contains .git file
-        // clone repo and checkout all branches
-        GitUtils.gitSSHClone(authInfo,getCloneCommandWithAuth(authInfo));
         // checkout all branches
-        GitUtils.gitCheckOutAllBranch(authInfo,lsRemoteCommandWithAuth);
-        return null;
+        return syncStatus &= GitUtils.gitCheckOutAllBranch(authInfo,lsRemoteCommandWithAuth);
     }
 
     public abstract CloneCommand getCloneCommandWithAuth(AuthInfo authInfo);
