@@ -1,4 +1,4 @@
-package org.wx;
+package org.wx.utils;
 
 import lombok.Data;
 
