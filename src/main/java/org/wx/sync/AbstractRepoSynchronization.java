@@ -30,13 +30,6 @@ public abstract class AbstractRepoSynchronization implements Synchronization{
         if(containGitFile){
             // checkout all branches and pull
             GitUtils.gitCheckOutAllBranch(authInfo,lsRemoteCommandWithAuth);
-//            List<String> branches = GitUtils.gitRemoteBranches(authInfo, lsRemoteCommandWithAuth);
-//            if(branches != null & branches.size() > 0){
-//                for (String branch : branches) {
-//                    GitUtils.gitCheckout(authInfo,branch);
-////                    GitUtils.gitPull(authInfo,pullCommandWithAuth);
-//                }
-//            }
             return Boolean.TRUE;
         }
         // if dose not contains .git file
