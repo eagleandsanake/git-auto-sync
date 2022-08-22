@@ -34,13 +34,7 @@ public class AuthInfoBuilder {
                 @Override
                 public List<Proxy> select(URI uri) {
                     return Arrays.asList(new Proxy(Proxy.Type.HTTP, InetSocketAddress
-                            .createUnresolved(authInfo.getIpAddress(), authInfo.getPort())),
-                            new Proxy(Proxy.Type.SOCKS, InetSocketAddress
-                                    .createUnresolved(authInfo.getIpAddress(), 7891))
-                            ,
-                            new Proxy(Proxy.Type.DIRECT, InetSocketAddress
-                                    .createUnresolved(authInfo.getIpAddress(), authInfo.getPort()))
-                            );
+                            .createUnresolved(authInfo.getIpAddress(), authInfo.getPort())));
                 }
 
                 @Override
