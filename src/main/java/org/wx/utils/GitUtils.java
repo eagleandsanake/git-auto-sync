@@ -69,7 +69,8 @@ public class GitUtils {
                 } else {//如果分支在本地不存在，需要创建这个分支，并追踪到远程分支上面。
                     git.checkout().setCreateBranch(true).setName(branchName).setStartPoint("origin/" + branchName).call();
                 }
-                git.pull().call();//拉取最新的提交
+                git.pull().setTransportConfigCallback(authInfo.getTransportConfigCallback()).call();
+//                git.pull().call();//拉取最新的提交
             } finally {
                 git.close();
             }
