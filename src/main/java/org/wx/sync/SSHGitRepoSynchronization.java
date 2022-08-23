@@ -37,7 +37,7 @@ public class SSHGitRepoSynchronization extends AbstractRepoSynchronization{
     @Override
     public PullCommand getPullCommandWithAuth(AuthInfo authInfo) throws IOException {
         String localCodeDir = authInfo.getLocalCodeDir();
-        localCodeDir+="\\.git";
+        localCodeDir+="/.git";
         FileRepository fileRepository = new FileRepository(new File(localCodeDir));
         Git pullGit = new Git(fileRepository);
         return pullGit.pull().setTransportConfigCallback(authInfo.getTransportConfigCallback());

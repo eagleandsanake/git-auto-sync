@@ -60,7 +60,7 @@ public class GitUtils {
     public static void gitCheckout(AuthInfo authInfo,String branchName) throws GitAPIException, IOException {
         try {
             String localCodeDir = authInfo.getLocalCodeDir();
-            localCodeDir+="\\.git";
+            localCodeDir+="/.git";
             FileRepository fileRepository = new FileRepository(new File(localCodeDir));
             Git git = new Git(fileRepository);
             try {
